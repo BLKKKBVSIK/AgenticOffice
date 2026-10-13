@@ -1,0 +1,51 @@
+/* The 📅 Calendar's window: the week grid, an event in full, and picking the calendar. */
+.modal.cal-modal { width: min(1240px, 100%); height: min(860px, calc(100vh - 32px)); }
+.cal-modal header h2 small { font-size: 14px; font-weight: 800; color: var(--muted); }
+.cal-nav { display: flex; align-items: center; gap: 6px; margin-left: auto; flex-wrap: wrap; }
+.cal-nav .btn:disabled { opacity: .4; cursor: default; }
+.cal-week-label { font-weight: 900; margin: 0 8px; white-space: nowrap; }
+.cal-body { flex: 1; min-height: 0; display: flex; gap: 0; padding: 0; overflow: hidden; }
+.cal-main { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 8px 0 0 8px; }
+.cal-heads, .cal-strip-row { display: grid; grid-template-columns: 56px 1fr; }
+.cal-heads { grid-template-columns: 56px repeat(7, 1fr); padding-right: 12px; }
+.cal-strip-row { padding-right: 12px; border-bottom: 2px solid rgba(43, 45, 66, .15); }
+.cal-head { display: flex; flex-direction: column; align-items: center; padding: 2px 0 6px; color: var(--muted); }
+.cal-head small { font-size: 11px; font-weight: 900; text-transform: uppercase; }
+.cal-head b { font-size: 20px; font-weight: 900; color: var(--ink); width: 34px; height: 34px; line-height: 34px; text-align: center; border-radius: 50%; }
+.cal-head.today small { color: #1a73e8; }
+.cal-head.today b { background: #1a73e8; color: #fff; }
+.cal-strip { position: relative; }
+.cal-bar, .cal-ev { position: absolute; border: 0; border-radius: 6px; color: #fff; font: inherit; text-align: left; cursor: pointer; overflow: hidden; }
+.cal-bar { height: 22px; padding: 0 8px; font-size: 12px; font-weight: 800; white-space: nowrap; text-overflow: ellipsis; }
+.cal-scroll-wrap { flex: 1; min-height: 0; position: relative; }
+.cal-scroll { position: absolute; inset: 0; overflow-y: auto; display: grid; grid-template-columns: 56px 1fr; }
+.cal-hours { position: relative; }
+.cal-hour { position: absolute; right: 8px; transform: translateY(-50%); font-size: 11px; font-weight: 800; color: var(--muted); }
+.cal-cols { position: relative; height: calc(24 * 48px); background: repeating-linear-gradient(to bottom, rgba(43, 45, 66, .1) 0 1px, transparent 1px 48px); }
+.cal-col { position: absolute; top: 0; bottom: 0; border-left: 1px solid rgba(43, 45, 66, .1); }
+.cal-col.today { background: rgba(26, 115, 232, .06); }
+.cal-ev { display: flex; flex-direction: column; padding: 3px 6px; font-size: 12px; line-height: 1.25; box-shadow: 0 0 0 1px #fff; }
+.cal-ev b { font-weight: 900; overflow: hidden; text-overflow: ellipsis; }
+.cal-ev small { font-weight: 700; opacity: .9; }
+.cal-ev.short { flex-direction: row; align-items: center; white-space: nowrap; padding-top: 0; padding-bottom: 0; }
+.cal-ev.past, .cal-bar.past { opacity: .5; }
+.cal-ev.on, .cal-bar.on { box-shadow: 0 0 0 2px var(--ink); z-index: 2; }
+.cal-now { position: absolute; height: 2px; background: #ea4335; z-index: 3; pointer-events: none; }
+.cal-now::before { content: ''; position: absolute; left: -6px; top: -5px; width: 12px; height: 12px; border-radius: 50%; background: #ea4335; }
+.cal-detail { width: 300px; flex: none; overflow: auto; padding: 14px 16px; border-left: 2px solid rgba(43, 45, 66, .15); background: rgba(255, 250, 243, .6); }
+.cal-detail.empty { color: var(--muted); font-weight: 700; }
+.cal-detail-title { display: flex; gap: 10px; align-items: flex-start; }
+.cal-detail h3 { margin: 0; font-size: 18px; font-weight: 900; overflow-wrap: anywhere; }
+.cal-dot { flex: none; width: 14px; height: 14px; margin-top: 4px; border-radius: 4px; }
+.cal-when { font-weight: 800; color: var(--muted); }
+.cal-where, .cal-desc { overflow-wrap: anywhere; }
+.cal-desc { white-space: pre-wrap; font-size: 13px; }
+.cal-detail a:not(.btn) { color: #1d6fd6; font-weight: 800; }
+.cal-setup { display: flex; flex-direction: column; gap: 10px; max-width: 640px; margin: 18px auto; padding: 0 16px; text-align: left; }
+.cal-setup ol { margin: 0; padding-left: 20px; line-height: 1.7; }
+.cal-setup a { color: #1d6fd6; font-weight: 800; }
+.cal-setup input { width: 100%; }
+.cal-setup-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+@media (max-width: 760px) {
+  .cal-detail { display: none; }
+}

@@ -17,6 +17,7 @@ import { Maps } from '../maps.js';
 import { OfficePrompts } from '../prompts.js';
 import { LeaveOnMerge } from '../leave-on-merge.js';
 import { Notion } from '../notion.js';
+import { Calendar } from '../calendar.js';
 import type { ServiceInfo, ServicesState } from '../../shared/protocol.js';
 import type { BuildingServices, Ctx, LateServices } from './context.js';
 import type { Client } from './client.js';
@@ -159,6 +160,10 @@ export function createLateServices(ctx: Ctx): LateServices {
   });
   notion.start(() => clients.size > 0);
 
+  // The 📅 Calendar board: the building's Google Calendar, the same on every floor.
+  const calendar = new Calendar(cfg.dataDir, () => ctx.broadcast({ t: 'calendar', state: calendar.view() }));
+  calendar.start(() => clients.size > 0);
+
   const upgrader = new Upgrader(
     (state) => ctx.broadcast({ t: 'upgrade', state }),
     () => {
@@ -167,5 +172,5 @@ export function createLateServices(ctx: Ctx): LateServices {
       process.kill(process.pid, 'SIGTERM');
     },
   );
-  return { team, tailnet, services, images, notion, upgrader, servicesState };
+  return { team, tailnet, services, images, notion, calendar, upgrader, servicesState };
 }

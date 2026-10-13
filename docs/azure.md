@@ -65,7 +65,7 @@ deploy/azure.sh team                  # who's invited
 deploy/azure.sh revoke 203.0.113.7    # take an IP back off the list
 ```
 
-The office knows it was deployed with `deploy/azure.sh`, so the commands it suggests in **👥 Invite teammates** and on the **🌐 Services** board are the Azure ones.
+The office knows it was deployed with `deploy/azure.sh`, so the commands it suggests in **👥 Invite teammates** and in **🌐 Services** (in the **☰** menu) are the Azure ones.
 
 Accounts work as in the [README](../README.md#add-users). To make an invite link from your terminal:
 
@@ -77,7 +77,7 @@ deploy/azure.sh ssh 'node /opt/agent-office/bin/agent-office.js accounts invite 
 
 ```bash
 deploy/azure.sh open                     # tunnel + open the office in your browser
-deploy/azure.sh service 5173             # open a worker's web server from the 🌐 Services board
+deploy/azure.sh service 5173             # open a worker's web server from 🌐 Services in the ☰ menu
 deploy/azure.sh status                   # VM, address, office up?, team, allowed IPs
 deploy/azure.sh resize Standard_D8as_v5  # bigger or smaller VM; same address, a few minutes of downtime
 deploy/azure.sh update                   # install the latest agent-office and restart

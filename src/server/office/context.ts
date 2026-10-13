@@ -13,6 +13,7 @@ import type { Upgrader } from '../upgrade.js';
 import type { Services } from '../services.js';
 import type { ImageProxy } from '../decor.js';
 import type { Notion } from '../notion.js';
+import type { Calendar } from '../calendar.js';
 import type { Ledger } from '../usage.js';
 import type { PlanLimitsReader } from '../limits.js';
 import type { Webhook } from '../webhook.js';
@@ -90,6 +91,8 @@ export interface LateServices {
   images: ImageProxy;
   /** The 🗂️ Notion board's tasks, for every floor. */
   notion: Notion;
+  /** The 📅 Calendar board's events, for the whole building. */
+  calendar: Calendar;
   upgrader: Upgrader;
   /** A floor's Services board: its own workers' servers. */
   servicesState(floor: Floor | undefined, items?: ServiceInfo[]): ServicesState;

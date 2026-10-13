@@ -52,7 +52,7 @@ They leave it running, open http://localhost:4600 and sign in. Their keys log in
 
 ```bash
 deploy/railway.sh open                 # tunnel + open the office in your browser
-deploy/railway.sh service 5173         # open a worker's web server from the 🌐 Services board
+deploy/railway.sh service 5173         # open a worker's web server from 🌐 Services in the ☰ menu
 deploy/railway.sh invite <gh-user>     # let a teammate tunnel in (or: invite <name> <key.pub>)
 deploy/railway.sh uninvite <name>      # remove their keys and drop open tunnels
 deploy/railway.sh team                 # who's invited

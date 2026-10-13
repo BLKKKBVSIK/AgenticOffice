@@ -9,6 +9,7 @@ import type { BallState } from '../hoop.js';
 import type { JukeboxState } from '../jukebox.js';
 import type { WhiteboardView } from '../whiteboard.js';
 import type { AgentProvider } from './agents.js';
+import type { CalendarState } from './calendar.js';
 import type { GhIssue, GhPull, GhState } from './github.js';
 import type { MeetingState } from './meetings.js';
 import type { NotionRef, NotionState } from './notion.js';
@@ -113,6 +114,8 @@ export interface FloorView {
   /** The signs over this floor's desks, and how far its back office is built out. */
   plan: FloorPlan;
   services: ServicesState;
+  /** The building's 📅 Calendar board, on the wall where the services board was. */
+  calendar: CalendarState;
   /** The floor's dog; null in a building with no floors yet. */
   dog: DogState | null;
   /** What the lounge jukebox is playing. */

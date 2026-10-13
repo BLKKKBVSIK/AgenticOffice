@@ -47,7 +47,7 @@ deploy/aws.sh allow 203.0.113.7     # their IP (SSH answers only allowed IPs)
 
 They leave that command running and sign in with the office password. Their keys log in as a separate `office` user that can **only** forward to the office port. It has no shell, no other ports, no `-R`, and no agent forwarding. So a leaked teammate key still doesn't get past the office password.
 
-**Reviewing what workers build.** Every web server a worker runs is listed on the **🌐 Services** board. Clicking a row copies a command like this one:
+**Reviewing what workers build.** Every web server a worker runs is listed in **🌐 Services** (in the **☰** menu). Clicking a row copies a command like this one:
 
 ```
 ssh -N -o ExitOnForwardFailure=yes -o PermitLocalCommand=yes -o LocalCommand="open http://localhost:5173" -L 5173:localhost:4600 office@<your-office-ip>
@@ -59,7 +59,7 @@ If chasing teammates' IPs gets old, `deploy/aws.sh allow anywhere` opens SSH to 
 
 ```bash
 deploy/aws.sh open                 # tunnel + open the office in your browser
-deploy/aws.sh service 5173         # open a worker's web server from the 🌐 Services board
+deploy/aws.sh service 5173         # open a worker's web server from 🌐 Services in the ☰ menu
 deploy/aws.sh invite <gh-user>     # let a teammate tunnel in (or: invite <name> <key.pub>)
 deploy/aws.sh uninvite <name>      # remove their keys and drop open tunnels
 deploy/aws.sh team                 # who's invited
@@ -110,7 +110,7 @@ Nothing new is opened in the security group: Tailscale only makes outgoing conne
 
 Anyone on your tailnet opens the link. There's no terminal to keep open, and no SSH keys or IPs to add. For someone who isn't on your tailnet, [share the machine](https://tailscale.com/kb/1084/sharing) from the [Machines](https://login.tailscale.com/admin/machines) page (**⋯ → Share…**). They accept it in their own Tailscale and reach this one machine, nothing else of yours. Or [invite them](https://login.tailscale.com/admin/users) to your tailnet. **☰ → 👥 Invite teammates** in the office, and `deploy/aws.sh invite` with no username, both say how, and give you an invite message to send. Everyone still signs in to the office itself, with the password or an account from **🔑 Accounts**.
 
-**Workers' servers.** Each one on the **🌐 Services** board gets its own link on the tailnet, `https://agent-office.<your-tailnet>.ts.net:5173`, instead of a tunnel command. When a worker starts a server, the office asks Serve for that port through `/usr/local/bin/agent-office-serve`, a small root helper that only ever points a port at the office. The office then checks the visitor is signed in and relays to the worker's server, just like a service tunnel. When the server stops, the port closes again. `deploy/aws.sh service 5173` opens that link too.
+**Workers' servers.** Each one in **🌐 Services** (in the **☰** menu) gets its own link on the tailnet, `https://agent-office.<your-tailnet>.ts.net:5173`, instead of a tunnel command. When a worker starts a server, the office asks Serve for that port through `/usr/local/bin/agent-office-serve`, a small root helper that only ever points a port at the office. The office then checks the visitor is signed in and relays to the worker's server, just like a service tunnel. When the server stops, the port closes again. `deploy/aws.sh service 5173` opens that link too.
 
 **The rest of the commands** know about the tailnet:
 

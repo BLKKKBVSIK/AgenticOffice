@@ -38,13 +38,14 @@ export type ViewMode = 'first' | 'third';
 
 /** The panels you can show or hide on screen, from the ☰ menu. */
 export type HudPanel = 'workers' | 'people' | 'spend' | 'limits' | 'chat' | 'floor';
-/** Out of the way by default: only the chat shows until you turn the rest on. */
-export const HUD_DEFAULTS: Record<HudPanel, boolean> = { workers: false, people: false, spend: false, limits: false, chat: true, floor: false };
+/** On screen by default: the workers, the Claude limits, the floor's details and the chat; the rest until you turn them on. */
+export const HUD_DEFAULTS: Record<HudPanel, boolean> = { workers: true, people: false, spend: false, limits: true, chat: true, floor: true };
 
 export interface Settings {
   view: ViewMode;
   /** Office sounds, 0–1. */
   volume: number;
+  /** Muted until you turn the sound on, like the jukebox. */
   muted: boolean;
   /** The lounge jukebox, 0–1, apart from the office sounds. */
   music: number;
@@ -121,7 +122,7 @@ export function rememberSpot(s: Spot) {
 }
 
 export function loadSettings(): Settings {
-  const s: Settings = { view: 'first', volume: 0.7, muted: false, music: 0.5, musicMuted: false, pageTurns: true, pushToTalk: false, notify: true, hud: { ...HUD_DEFAULTS }, pins: [] };
+  const s: Settings = { view: 'first', volume: 0.7, muted: true, music: 0.5, musicMuted: true, pageTurns: true, pushToTalk: false, notify: true, hud: { ...HUD_DEFAULTS }, pins: [] };
   try {
     const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) ?? 'null');
     if (saved?.view === 'first' || saved?.view === 'third') s.view = saved.view;

@@ -1,6 +1,6 @@
 /**
  * The boards on the walls: the 🗂️ Notion board where the issues board was, the PR board,
- * the services board, the task queue, the machine monitor and the meeting room's two. What E does at
+ * the 📅 Calendar where the services board was, the task queue, the machine monitor and the meeting room's two. What E does at
  * each is defined with it.
  */
 import type * as THREE from 'three';
@@ -9,8 +9,7 @@ import { boardHint, hintTitle, key, onE } from '../../core/hint';
 import { store, type Topic } from '../../state';
 import { openBoard } from '../../ui/boards';
 import type { BoardActions } from '../../ui/github/prompts';
-import { openServices } from '../../ui/services';
-import { BoardTexture, QueueBoardTexture, ServicesBoardTexture } from './world';
+import { BoardTexture, QueueBoardTexture } from './world';
 import { MachineTexture } from './machine';
 import { MeetingBoardTexture, MeetingSignTexture } from './meeting';
 import type { World } from '../../world/world';
@@ -25,8 +24,8 @@ declare module '../../world/types' {
   }
 }
 
-/** The board that hangs where the issues board was: the 🗂️ Notion board (features/notion). */
-export interface IssuesBoard {
+/** A board another feature hangs in one of these places: the 🗂️ Notion board, the 📅 Calendar. */
+export interface WallBoard {
   texture: THREE.Texture;
   render(): void;
   hint(): Hint;
@@ -34,8 +33,10 @@ export interface IssuesBoard {
 }
 
 export interface BoardsDeps {
-  /** What hangs where the issues board was. */
-  issuesBoard: IssuesBoard;
+  /** What hangs where the issues board was (features/notion). */
+  issuesBoard: WallBoard;
+  /** What hangs where the services board was (features/calendar). */
+  servicesBoard: WallBoard;
   /** What a board's buttons do: hand an issue to a worker, call a meeting about it… */
   boardActions(): BoardActions;
   /** The task queue's window. */
@@ -75,9 +76,9 @@ export function installBoards(ctx: Ctx, deps: BoardsDeps) {
     deskLinks = k;
     renderPullsBoard();
   });
-  const servicesTex = new ServicesBoardTexture();
-  const renderServicesBoard = () => servicesTex.render(store.services.items, store.workers);
-  mountBoard(office.boardMeshes.services, servicesTex.texture, renderServicesBoard, ['services', 'workers']);
+  // The 📅 Calendar hangs where the services board was; the services are in the ☰ menu.
+  const renderServicesBoard = deps.servicesBoard.render;
+  mountBoard(office.boardMeshes.services, deps.servicesBoard.texture, renderServicesBoard, ['calendar']);
   const queueTex = new QueueBoardTexture();
   const renderQueueBoard = () => queueTex.render(store.queue, store.workers);
   mountBoard(office.boardMeshes.queue, queueTex.texture, renderQueueBoard, ['queue', 'workers']);
@@ -93,8 +94,8 @@ export function installBoards(ctx: Ctx, deps: BoardsDeps) {
   });
   ctx.interactions.define('services', {
     reach: 9,
-    hint: () => boardHint('🌐 Services board'),
-    use: onE(() => openServices()),
+    hint: () => deps.servicesBoard.hint(),
+    use: onE(() => deps.servicesBoard.open()),
   });
   ctx.interactions.define('queue', {
     reach: 9,
@@ -116,7 +117,7 @@ export function installBoards(ctx: Ctx, deps: BoardsDeps) {
   function dressBoards(w: World) {
     showOn(w.boardMeshes.issues, deps.issuesBoard.texture);
     showOn(w.boardMeshes.pulls, pullsTex.texture);
-    showOn(w.boardMeshes.services, servicesTex.texture);
+    showOn(w.boardMeshes.services, deps.servicesBoard.texture);
     showOn(w.boardMeshes.queue, queueTex.texture);
     if (w.meetingBoard) showOn(w.meetingBoard, meetingBoardTex.texture);
     if (w.meetingSign) showOn(w.meetingSign, meetingSignTex.texture);
