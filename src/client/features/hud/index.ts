@@ -23,6 +23,7 @@ import { needsSigningIn, openSignIns } from '../../ui/signins';
 import { openTeam } from '../../ui/team';
 import { openUpgrade } from '../../ui/upgrade';
 import { openNotionBoard } from '../notion/ui';
+import { openCalendar } from '../calendar/ui';
 import { openWhiteboard } from '../whiteboard/ui';
 import { describeSky } from '../../world/sky';
 
@@ -55,6 +56,7 @@ export function installHud(ctx: Ctx, core: CoreState, parts: HudParts) {
       { id: 'gh-issues', icon: '📌', label: 'GitHub issues', section: 'Open', count: () => store.issues.items.filter((i) => i.state === 'OPEN').length, title: () => 'The repository’s GitHub issues', run: () => openBoard('issues', net, actions.boardActions()) },
       { id: 'queue', icon: '📋', label: 'Task queue', section: 'Open', count: () => store.queue.tasks.filter((t) => t.status !== 'done').length, title: () => 'Issues and tasks waiting for a worker', run: waiting.showQueue },
       { id: 'services', icon: '🌐', label: 'Services', section: 'Open', count: () => store.services.items.length, title: () => 'Web servers the workers are running', run: () => openServices() },
+      { id: 'calendar', icon: '📅', label: 'Calendar', section: 'Open', title: () => 'The building’s Google Calendar, a week at a time', run: () => openCalendar(net) },
       { id: 'whiteboard', icon: '📝', label: 'Whiteboard', section: 'Open', title: () => 'Draw together, live', run: () => openWhiteboard(net) },
       // Up on the top bar while a meeting is on: what's being worked through in the meeting room.
       {

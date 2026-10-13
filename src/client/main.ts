@@ -60,6 +60,7 @@ import { installWaiting } from './features/waiting';
 import { installWalking } from './features/walking';
 import { installWhiteboard } from './features/whiteboard';
 import { installNotion } from './features/notion';
+import { installCalendar } from './features/calendar';
 import { installWorkerActions } from './features/workers/actions';
 import { installWorkerViews } from './features/workers/views';
 
@@ -92,9 +93,10 @@ parts.worlds = createWorlds(ctx);
 installSky(ctx);
 
 // ---- The install list ---------------------------------------------------------------------------
-// The 🗂️ Notion board hangs where the issues board was, so it's made first.
+// The 🗂️ Notion board hangs where the issues board was, and the 📅 Calendar where the services board was, so they're made first.
 const notion = installNotion(ctx, { boardActions: () => parts.actions.boardActions() });
-parts.boards = installBoards(ctx, { issuesBoard: notion.board, boardActions: () => parts.actions.boardActions(), showQueue: () => parts.waiting.showQueue() });
+const calendar = installCalendar(ctx);
+parts.boards = installBoards(ctx, { issuesBoard: notion.board, servicesBoard: calendar.board, boardActions: () => parts.actions.boardActions(), showQueue: () => parts.waiting.showQueue() });
 parts.gallery = installGallery(ctx);
 installWhiteboard(ctx);
 // Onto whatever you're walking on: the office's floor and furniture, or the roof's.

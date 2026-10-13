@@ -55,7 +55,7 @@ They leave it running, open http://localhost:4600 and sign in. Their keys log in
 
 ```bash
 deploy/dokploy.sh open                 # tunnel + open the office in your browser
-deploy/dokploy.sh service 5173         # open a worker's web server from the 🌐 Services board
+deploy/dokploy.sh service 5173         # open a worker's web server from 🌐 Services in the ☰ menu
 deploy/dokploy.sh invite <gh-user>     # let a teammate tunnel in (or: invite <name> <key.pub>)
 deploy/dokploy.sh uninvite <name>      # remove their keys and drop open tunnels
 deploy/dokploy.sh team                 # who's invited

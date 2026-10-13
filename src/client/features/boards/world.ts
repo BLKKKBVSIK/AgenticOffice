@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import type { GhIssue, GhPull, GhState, QueueState, QueueTask, ServiceInfo, WorkerInfo } from '../../../shared/protocol';
+import type { GhIssue, GhPull, GhState, QueueState, QueueTask, WorkerInfo } from '../../../shared/protocol';
 import { store, workerForPull } from '../../state';
 
 export const NOTE_COLORS = ['#fff7b0', '#ffd6e0', '#caffbf', '#bde0fe', '#ffe5b4'];
@@ -182,89 +182,6 @@ export class BoardTexture {
       g.font = '800 26px Nunito, ui-rounded, system-ui, sans-serif';
       g.textAlign = 'right';
       g.fillText(`+${open.length - cols * rows} more`, W - 20, H - 16);
-      g.textAlign = 'left';
-    }
-    this.texture.needsUpdate = true;
-  }
-}
-
-/** The services board: a chalkboard listing the web servers workers are running. */
-export class ServicesBoardTexture {
-  readonly texture: THREE.CanvasTexture;
-  private canvas = document.createElement('canvas');
-  private ctx: CanvasRenderingContext2D;
-  private drawn = '';
-
-  constructor() {
-    this.canvas.width = 1200;
-    this.canvas.height = 600;
-    this.ctx = this.canvas.getContext('2d')!;
-    this.texture = new THREE.CanvasTexture(this.canvas);
-    this.texture.colorSpace = THREE.SRGBColorSpace;
-    this.texture.anisotropy = 8;
-  }
-
-  render(items: ServiceInfo[], workers: Map<string, WorkerInfo>) {
-    const rows = items.map((s) => {
-      const w = workers.get(s.workerId);
-      return { port: s.port, title: s.title || s.command, who: [w?.name ?? 'A worker', w?.worktree?.branch].filter(Boolean).join(' · '), color: w?.color ?? '#8d99ae' };
-    });
-    // Worker updates stream in constantly; only redraw when what's shown changes.
-    const key = JSON.stringify(rows);
-    if (key === this.drawn) return;
-    this.drawn = key;
-    const g = this.ctx;
-    const W = this.canvas.width;
-    const H = this.canvas.height;
-    g.fillStyle = '#23303b';
-    g.fillRect(0, 0, W, H);
-    // chalk smudges
-    g.fillStyle = 'rgba(255,255,255,.025)';
-    for (let i = 0; i < 18; i++) g.fillRect(((i * 997) % W) - 60, ((i * 613) % H) - 20, 260, 34);
-    if (!rows.length) {
-      g.textAlign = 'center';
-      g.fillStyle = '#e9ecef';
-      g.font = '900 52px Nunito, ui-rounded, system-ui, sans-serif';
-      g.fillText('No web servers running', W / 2, H / 2 - 20);
-      g.fillStyle = 'rgba(233,236,239,.6)';
-      g.font = '700 32px Nunito, ui-rounded, system-ui, sans-serif';
-      g.fillText('When a worker starts one, it shows up here', W / 2, H / 2 + 36);
-      g.textAlign = 'left';
-      this.texture.needsUpdate = true;
-      return;
-    }
-    const shown = rows.slice(0, 5);
-    const rowH = Math.min(140, (H - 40) / shown.length);
-    const fs = Math.round(rowH * 0.36);
-    shown.forEach((r, i) => {
-      const y = 20 + i * rowH;
-      g.fillStyle = 'rgba(255,255,255,.06)';
-      g.fillRect(24, y + 6, W - 48, rowH - 12);
-      g.beginPath();
-      g.arc(70, y + rowH / 2, fs * 0.42, 0, Math.PI * 2);
-      g.fillStyle = r.color;
-      g.fill();
-      g.lineWidth = 4;
-      g.strokeStyle = '#e9ecef';
-      g.stroke();
-      g.fillStyle = '#ffd166';
-      g.font = `900 ${fs}px ui-monospace, Menlo, monospace`;
-      g.textAlign = 'right';
-      g.fillText(`:${r.port}`, W - 50, y + rowH / 2 + fs * 0.35);
-      g.textAlign = 'left';
-      const textW = W - 120 - 50 - g.measureText(`:${r.port}`).width - 30;
-      g.fillStyle = '#f8f9fa';
-      g.font = `800 ${fs}px Nunito, ui-rounded, system-ui, sans-serif`;
-      g.fillText(clip(g, r.title, textW), 110, y + rowH / 2 - fs * 0.08);
-      g.fillStyle = 'rgba(233,236,239,.65)';
-      g.font = `700 ${Math.round(fs * 0.62)}px Nunito, ui-rounded, system-ui, sans-serif`;
-      g.fillText(clip(g, r.who, textW), 110, y + rowH / 2 + fs * 0.72);
-    });
-    if (rows.length > shown.length) {
-      g.fillStyle = '#e9ecef';
-      g.font = '800 26px Nunito, ui-rounded, system-ui, sans-serif';
-      g.textAlign = 'right';
-      g.fillText(`+${rows.length - shown.length} more`, W - 24, H - 10);
       g.textAlign = 'left';
     }
     this.texture.needsUpdate = true;

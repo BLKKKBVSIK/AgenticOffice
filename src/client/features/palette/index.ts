@@ -19,6 +19,7 @@ import { openIssue, openPull } from '../../ui/pull';
 import { openServices, serviceUrl } from '../../ui/services';
 import { openTeam } from '../../ui/team';
 import { IS_MAC } from '../../ui/termkeys';
+import { openCalendar } from '../calendar/ui';
 import { openWhiteboard } from '../whiteboard/ui';
 import type { InteractKind, Interactable } from '../../world/types';
 
@@ -102,7 +103,8 @@ export function installPalette(ctx: Ctx, parts: PaletteParts) {
 
     out.push(at('issues', 'the Issues board', { icon: '📌', kind: 'Board', title: 'Issues board', open: () => openBoard('issues', net, actions.boardActions()) }));
     out.push(at('pulls', 'the PR board', { icon: '🔀', kind: 'Board', title: 'PR board', keywords: ['pull requests'], open: () => openBoard('pulls', net, actions.boardActions()) }));
-    out.push(at('services', 'the Services board', { icon: '🌐', kind: 'Board', title: 'Services board', detail: 'Web servers the workers are running', open: () => openServices() }));
+    out.push(at('services', 'the Calendar', { icon: '📅', kind: 'Board', title: 'Calendar', detail: 'The building’s Google Calendar', keywords: ['agenda', 'meetings', 'google calendar'], open: () => openCalendar(net) }));
+    out.push({ icon: '🌐', kind: 'Action', title: 'Services', detail: 'Web servers the workers are running', keywords: ['dev server', 'ports'], open: () => openServices() });
     out.push(at('whiteboard', 'the whiteboard', { icon: '📝', kind: 'Board', title: 'Whiteboard', open: () => openWhiteboard(net) }));
     out.push(at('meeting', 'the meeting room', { icon: '🤝', kind: 'Board', title: 'Meeting room', keywords: ['call a meeting'], open: () => meeting.showMeeting() }));
 
@@ -129,16 +131,14 @@ export function installPalette(ctx: Ctx, parts: PaletteParts) {
       );
     }
     for (const svc of store.services.items) {
-      const board = spotOf('services');
       out.push({
         icon: '🌐',
         kind: 'Service',
         title: svc.title || svc.command,
         detail: [`:${svc.port}`, svc.title && svc.command, store.workers.get(svc.workerId)?.name].filter(Boolean).join(' · '),
         keywords: [String(svc.port)],
-        // As its Open ↗ button does. A new tab needs the key press itself, so walking there shows the board instead.
+        // As its Open ↗ button does.
         open: () => window.open(serviceUrl(svc.port), '_blank', 'noopener'),
-        walk: board ? () => walkThen(board, 'the Services board', () => openServices()) : undefined,
       });
     }
     for (const p of store.peers.values()) {

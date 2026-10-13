@@ -221,7 +221,7 @@ test('what the browser remembers keeps its keys and shapes', () => {
 
 test("the store's keys are its state, as window.__office shows them", () => {
   // As the office had them before its store was split into slices: methods and the slices aren't among them.
-  assert.deepEqual(Object.keys(store).sort(), ['accounts', 'ball', 'cabinet', 'cabinetFrame', 'cars', 'carsAt', 'chat', 'clock', 'decor', 'dog', 'dogStart', 'drawing', 'floor', 'floorPlan', 'floors', 'ice', 'invites', 'issues', 'jail', 'jukebox', 'leaveOnMerge', 'limits', 'machine', 'map', 'me', 'meeting', 'notify', 'notion', 'notionDatabases', 'notionProjects', 'peers', 'profile', 'project', 'projectsDir', 'prompts', 'pulls', 'queue', 'repos', 'screens', 'services', 'signins', 'sky', 'subs', 'team', 'theme', 'upgrade', 'usage', 'whiteboard', 'workers', 'you']);
+  assert.deepEqual(Object.keys(store).sort(), ['accounts', 'ball', 'cabinet', 'cabinetFrame', 'calendar', 'cars', 'carsAt', 'chat', 'clock', 'decor', 'dog', 'dogStart', 'drawing', 'floor', 'floorPlan', 'floors', 'ice', 'invites', 'issues', 'jail', 'jukebox', 'leaveOnMerge', 'limits', 'machine', 'map', 'me', 'meeting', 'notify', 'notion', 'notionDatabases', 'notionProjects', 'peers', 'profile', 'project', 'projectsDir', 'prompts', 'pulls', 'queue', 'repos', 'screens', 'services', 'signins', 'sky', 'subs', 'team', 'theme', 'upgrade', 'usage', 'whiteboard', 'workers', 'you']);
 });
 
 test('a new store starts every field where it always has', async () => {
@@ -247,6 +247,7 @@ test('a new store starts every field where it always has', async () => {
       cars: parked(), carsAt: [], jail: { prisoners: [], bones: 0 },
       team: null, accounts: null, signins: null,
       notion: { items: [], fetchedAt: 0, loading: true }, notionDatabases: { list: [], loading: false, at: 0 }, notionProjects: { list: [], loading: false, at: 0 },
+      calendar: { configured: false, events: [], from: 0, to: 0, fetchedAt: 0, loading: true },
     },
   );
 });

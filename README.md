@@ -52,6 +52,7 @@ On the machine that runs the office:
 - At least one agent CLI, signed in as the user that runs the office: **Claude Code** (`claude`), **Codex** (`codex`), **OpenCode** (`opencode`), **Grok** (`grok`), **Muse** (`muse`), **DeepSeek Harness** (`dsh`) or **Pi** (`pi`, 0.87.1+). With [accounts](#add-users), everyone can sign in to their own Claude from the office instead.
 - **git**, and the **GitHub CLI** (`gh auth login`) for cloning repos and the issue and PR boards
 - Optionally, the **Notion CLI** ([`ntn`](https://developers.notion.com), `ntn login`) for the [Notion board](docs/features.md)
+- Optionally, a Google Calendar's **secret address in iCal format** for the [calendar board](docs/features.md) (pasted in the office; nothing to install)
 
 ## Run locally
 

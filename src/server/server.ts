@@ -58,6 +58,7 @@ export async function startServer(cfg: Config, opts: StartOptions = {}) {
     ctx.arcade.flush();
     ctx.upgrader.stop();
     ctx.notion.stop();
+    ctx.calendar.stop();
     services.stop();
     tailnet.stop();
     ctx.webhook.stop();
