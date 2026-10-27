@@ -16,6 +16,7 @@ import { pastTheWing, seatBuilt } from '../../core/floors';
 import { aside, hintTitle, key, onE } from '../../core/hint';
 import { noOutline } from '../../core/outline';
 import type { Parts } from '../../core/parts';
+import { lookTheAgent } from '../../core/stations';
 import { waitingInOrder } from '../../nextup';
 import { waitingOnSomeone } from '../../notify';
 import { renderTitle } from '../../shared/title';
@@ -124,6 +125,7 @@ export function installWorkerViews(ctx: Ctx, core: CoreState, parts: WorkerViews
         model.setCostume(store.theme.active);
         model.setOutfit(plan().agents.outfit === 'peasant' ? 'peasant' : null);
         model.setAge(ageOf(w));
+        lookTheAgent(model, desk.def.station);
         desk.seatAnchor.add(model.root);
         // Its globe floats beside the laptop (or the kiosk's counter), out from behind the card over
         // its head and the back of its chair, so it shows from across the room.
