@@ -135,8 +135,8 @@ export const BEANBAGS: DeskDef[] = (
 /** Everywhere a worker can sit: the desks, the back office's once it's built out (see deskBuilt), then the bean bags. */
 export const SEATS: DeskDef[] = [...DESKS, ...WING_DESKS, ...BEANBAGS];
 
-/** The boards with an agent standing by: the Issues board, the PR board and the task queue. */
-export type StationKind = 'issues' | 'pulls' | 'queue';
+/** The boards with an agent standing by (the Issues board, the PR board and the task queue), and S.T.E.L.L.A by the bookshelf. */
+export type StationKind = 'issues' | 'pulls' | 'queue' | 'stella';
 
 /**
  * The board agents: a worker standing behind a little kiosk just west of each of those boards (see
@@ -150,6 +150,9 @@ export const STATIONS: DeskDef[] = [
   { id: 'station-pulls', station: 'pulls', x: 0, z: FLOOR.minZ + 1.3, rotY: Math.PI, label: 'PR board' },
   // Between the Issues board and the task queue.
   { id: 'station-queue', station: 'queue', x: -7.8, z: FLOOR.minZ + 1.3, rotY: Math.PI, label: 'Task queue' },
+  // On the south wall between the balcony doors and the window east of them, near the bookshelf:
+  // the Ezymob back end's expert, who answers from the stella skill.
+  { id: 'station-stella', station: 'stella', x: -1.5, z: FLOOR.maxZ - 1.3, rotY: 0, label: 'S.T.E.L.L.A' },
 ];
 /** A board agent's kiosk: its top, and how far behind its middle (toward the wall) the agent stands. */
 export const KIOSK = { width: 0.8, depth: 0.5, height: 0.55, stand: 0.55 } as const;
@@ -158,6 +161,7 @@ export const STATION_AGENT: Record<StationKind, { name: string; color: string }>
   issues: { name: 'Notion agent', color: '#ef476f' },
   pulls: { name: 'PR agent', color: '#118ab2' },
   queue: { name: 'Queue agent', color: '#06d6a0' },
+  stella: { name: 'S.T.E.L.L.A', color: '#e0a985' },
 };
 
 /** The upstairs office: a glass-walled loft on posts in the south-east corner, looking down on the desks. */
