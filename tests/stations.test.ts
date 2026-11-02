@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { QUEUE_AGENT_DISALLOWED_TOOLS, stationBrief } from '../src/server/stations.js';
 import type { StationKind } from '../src/shared/layout.js';
 
-const KINDS: StationKind[] = ['issues', 'pulls', 'queue'];
+const KINDS: StationKind[] = ['issues', 'pulls', 'queue', 'stella'];
 
 test('every board agent reaches the queue with office-queue, not its own curl calls', () => {
   for (const kind of KINDS) {
@@ -43,6 +43,14 @@ test('the Notion and PR agents keep their jobs, and may still be asked for somet
     assert.match(brief, /say in a few lines what you did, with links/);
     assert.doesNotMatch(brief, /one-line fix/);
   }
+});
+
+test('S.T.E.L.L.A answers about the Ezymob back end from the stella skill', () => {
+  const brief = stationBrief('stella');
+  assert.match(brief, /S\.T\.E\.L\.L\.A/);
+  assert.match(brief, /Ezymob back end/);
+  assert.match(brief, /load the stella skill/);
+  assert.match(brief, /goes on the task queue, unless the person asks you for something else/);
 });
 
 test('the queue agent is launched without the file-editing tools', () => {

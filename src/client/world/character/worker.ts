@@ -19,7 +19,7 @@ export class Worker {
   readonly root = new THREE.Group();
   private body = new THREE.Group();
   /** Its moving parts, for what poses them from the other files here (a dance, a cell, a costume). */
-  private rig: WorkerRig;
+  readonly rig: WorkerRig;
   private bulb: THREE.MeshToonMaterial;
   private bulbMesh: THREE.Mesh;
   private armL: THREE.Object3D;

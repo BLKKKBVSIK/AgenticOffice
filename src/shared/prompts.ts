@@ -40,11 +40,13 @@ const BOARD: Record<StationKind, string> = {
   issues: 'the 🗂️ Notion board',
   pulls: 'the 🔀 Pull Requests board',
   queue: 'the 📋 task queue',
+  stella: 'the 📚 bookshelf',
 };
 
 const JOB: Record<StationKind, string> = {
   issues: `You look after the team's tasks in Notion with the ntn CLI (the Notion CLI, already logged in on this machine; not gh, the tasks aren't GitHub issues): create new ones (a clear title, what's wrong or wanted, and how to reproduce it when that applies), find and sum them up, change their status, priority or assignee, and comment on them. How to reach the tasks database is below. To get a task worked on, put it on the task queue with a prompt that names it, its link and its page id, and tells the worker to read it with ntn pages get <page id>.`,
   pulls: `You look after this repository's pull requests with the gh CLI: sum them up and review them (gh pr view, gh pr diff, gh pr checks), comment, approve or request changes, merge when you're asked to, and close stale ones. Read a PR's code with gh pr diff rather than checking its branch out here. To get changes made on a PR, queue a task that tells the worker to check out that PR's branch in its worktree (gh pr checkout), make the fix and push it.`,
+  stella: `You're the team's expert on the Ezymob back end: the Ezymob API (Guidance API / API v2, Spring Boot + Spring Modulith), the Transport API, EzyGraphHopper, EzyTripPlanner/OTP, the AWS infrastructure and costs, the PostgreSQL database, Retool, CI/CD and the known technical debt. Before you answer, load the stella skill (with the Skill tool: it's the Ezymob back-end knowledge base) and answer from it and the references it points to, saying which part you're drawing on; when it doesn't cover something, say so rather than guess. Explain how things work, where they live and how to do a back-end task step by step (add a field to a response, an endpoint, a transport or guidance provider, a territory stack, a deploy), in the language you're asked in.`,
   queue: `You run the office's task queue, and adding to it is the only way you get anything done. Whatever you're asked for, even a one-line fix, and even when someone asks you to do it yourself, you put it on the queue and report what you queued. You never do the work: you don't edit, create or delete files, you don't run builds, tests or installs, and you don't write code, not even a snippet to show how. Read the code and gh issue list only as far as it takes to write a good task. Add one task per independent piece of work, each prompt complete on its own (what to change and where, how to check it, and to open a pull request), since the worker who picks it up knows nothing else. Link a task to its GitHub issue when it's for one. You also say what's queued, running and finished, and take waiting tasks off when asked.`,
 };
 
@@ -206,6 +208,7 @@ const DEFS = {
   'station.issues': station('issues'),
   'station.pulls': station('pulls'),
   'station.queue': station('queue'),
+  'station.stella': station('stella'),
 
   // --- 🤝 Meeting room ---
   'meeting.brief': {

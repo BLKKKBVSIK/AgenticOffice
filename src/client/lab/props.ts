@@ -11,14 +11,17 @@
 // Once it has drawn, window.__ready holds each prop's size, triangles, draw calls and material names.
 
 import * as THREE from 'three';
-import { DESKS } from '../../shared/layout';
+import { DESKS, STATIONS, STATION_AGENT } from '../../shared/layout';
+import { lookTheAgent } from '../core/stations';
 import { buildCabinet } from '../features/cabinet/world';
 import { supercar } from '../features/cars/world';
 import { buildGong } from '../features/gong/world';
 import { buildJukebox } from '../features/jukebox/world';
+import { Worker } from '../world/character';
 import { buildKitchen } from '../world/kitchen';
 import { preloadModels } from '../world/models';
 import { DESK_BOOKS, FLOOR_PLANTS, buildDesk, coffeeTable, deskBooks, deskMug, loungeCouch, plant, pouf } from '../world/office';
+import { buildKiosk } from '../world/office/seats';
 import { toon } from '../world/toon';
 import { ready, stage } from './stage';
 
@@ -78,6 +81,15 @@ const SHOW: Record<string, () => Shown> = {
   },
   lambo: () => ({ object: supercar('lambo', '#ffd166').root }),
   ferrari: () => ({ object: supercar('ferrari', '#ef476f').root }),
+  // S.T.E.L.L.A waiting at her kiosk (view=3.14 to see her face).
+  stella: () => {
+    const kiosk = buildKiosk({ ...STATIONS.find((d) => d.station === 'stella')!, x: 0, z: 0 });
+    const model = new Worker(STATION_AGENT.stella.name, STATION_AGENT.stella.color);
+    model.setStatus('idle', false);
+    lookTheAgent(model, 'stella');
+    kiosk.vacancy.children[0].add(model.root);
+    return { object: kiosk.group };
+  },
 };
 
 const q = new URLSearchParams(location.search);

@@ -174,8 +174,8 @@ export interface MapConfig {
   lineup?: { x: number; z: number; rotY: number; step: [number, number]; count: number } | null;
   /** Where the workers sit. The sides toward the middle of the hall fill first. */
   tables: TableConfig[];
-  /** The board agents, each at a lectern: where the lectern is, and `rotY` from it to where the agent stands (it faces back across the lectern, into the hall). */
-  stations: Record<StationKind, Place>;
+  /** The board agents, each at a lectern: where the lectern is, and `rotY` from it to where the agent stands (it faces back across the lectern, into the hall). S.T.E.L.L.A's may be left out. */
+  stations: Record<Exclude<StationKind, 'stella'>, Place> & { stella?: Place };
   /** The meeting table: five chairs round it, the head of the table's on its `rotY` side (facing back across it), and the easel on the other. */
   council: Place;
   boards: Record<BoardKey, BoardPlace>;

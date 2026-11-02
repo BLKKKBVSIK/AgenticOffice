@@ -101,6 +101,7 @@ export const CASTLE: MapConfig = {
     issues: { x: -11.3, z: -15, rotY: -Math.PI / 2 },
     queue: { x: -11.3, z: -3, rotY: -Math.PI / 2 },
     pulls: { x: 11.3, z: -15, rotY: Math.PI / 2 },
+    stella: { x: 11.3, z: -3, rotY: Math.PI / 2 },
   },
   council: { x: 7.2, z: -18.8, rotY: 0 },
   boards: {

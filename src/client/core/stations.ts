@@ -1,6 +1,7 @@
 /** The board agents: what each is for, and the ones waiting by their boards before anyone has asked them anything. */
 import { STATION_AGENT, type StationKind } from '../../shared/layout';
 import { Worker } from '../world/character';
+import { lookLikeStella } from '../world/character/worker-stella';
 import type { DeskView } from '../world/types';
 import type { World } from '../world/world';
 import { noOutline } from './outline';
@@ -9,8 +10,19 @@ import { noOutline } from './outline';
 export const STATION_INFO: Record<StationKind, { icon: string; offer: string; does: string; example: string }> = {
   issues: { icon: '🗂️', offer: 'Ask me about Notion tasks', does: 'I create, find, update and comment on them', example: 'Create a task: the trip details page is missing the next departures' },
   pulls: { icon: '🔀', offer: 'Ask me about PRs', does: 'I sum up, review, comment on and merge them', example: 'Review the newest PR and tell me if it’s ready to merge' },
+  stella: { icon: '🧠', offer: 'Ask me about the Ezymob back end', does: 'I answer from the stella knowledge base', example: 'How do I add a field to the guidance response?' },
   queue: { icon: '📋', offer: 'Ask me to queue work', does: 'I turn it into tasks for fresh workers', example: 'Queue every open bug issue, most important first' },
 };
+
+/** Board agents with a look of their own, put on over the bean in their color, waiting or hired. */
+const STATION_LOOKS: Partial<Record<StationKind, (model: Worker) => void>> = {
+  stella: (model) => lookLikeStella(model.rig),
+};
+
+/** Dresses `model` in its board agent's own look, if it's a board agent that has one. */
+export function lookTheAgent(model: Worker, kind: StationKind | undefined) {
+  if (kind) STATION_LOOKS[kind]?.(model);
+}
 
 /** A board agent waiting by its board before anyone has asked it anything (see buildKiosk), and where. */
 export interface IdleAgent {
@@ -27,6 +39,7 @@ export function idleAgentsIn(w: World): IdleAgent[] {
     model.setStatus('idle', false);
     model.setTask({ name: STATION_INFO[kind].offer, summary: STATION_INFO[kind].does });
     model.setOutfit(w.plan.agents.outfit === 'peasant' ? 'peasant' : null);
+    lookTheAgent(model, kind);
     const view = w.desks.get(def.id)!;
     view.vacancy.children[0].add(model.root);
     noOutline(model.root);

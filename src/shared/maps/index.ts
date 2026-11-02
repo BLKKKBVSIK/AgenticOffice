@@ -14,7 +14,9 @@ export const OFFICE_MAP = 'office';
 /** The maps that come with the office, besides the office itself. */
 export const BUILTIN_MAPS: readonly MapConfig[] = [CASTLE];
 
-const STATION_KINDS: readonly StationKind[] = ['issues', 'pulls', 'queue'];
+const STATION_KINDS: readonly StationKind[] = ['issues', 'pulls', 'queue', 'stella'];
+/** The board agents a map may leave out: they're just not there on it. */
+const OPTIONAL_STATIONS: readonly StationKind[] = ['stella'];
 /** How far in from a table's edge a seat's place setting is; the worker sits 0.85 out from it (see deskSeat), on the bench. */
 const PLACE_IN = 0.35;
 /** How far out from a table's edge the middle of the bench down that side is. */
@@ -201,7 +203,7 @@ export function planMap(input: unknown): MapPlan {
 
   // The board agents' lecterns.
   if (!isObj(c.stations)) throw new MapError('it needs stations: where the Issues, PR and Queue agents stand');
-  const stations: DeskDef[] = STATION_KINDS.map((kind) => {
+  const stations: DeskDef[] = STATION_KINDS.filter((kind) => !OPTIONAL_STATIONS.includes(kind) || c.stations[kind] !== undefined).map((kind) => {
     const p = place(c.stations[kind], `stations.${kind}`);
     const def = { id: `station-${kind}`, station: kind, x: p.x, z: p.z, rotY: p.rotY, label: STATION_AGENT[kind].name };
     // The agent stands behind its lectern: that's in the hall too.
